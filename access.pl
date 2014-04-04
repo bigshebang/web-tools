@@ -4,7 +4,7 @@ use strict;
 
 #~constants
 my $accessLog = "/var/log/httpd/access_log";
-my $siteName = "www.yoursite.com"
+my $siteName = "www.yoursite.com";
 
 my $hits = `wc -l < $accessLog`;
 chomp $hits;
