@@ -1,8 +1,27 @@
 #!/usr/bin/perl -w
 #analyze errors on web server
+# TO DO LIST
+# add command line options and a menu based system if no arguments given
+# allow user to specify sitename and location of error log
+# let user sort based on error type, date, data, and client
+# let user show only one type of error (list all errors given)
+# let user specify a certain period of time to show errors between
 
-my $siteName = "www.yoursite.com";
-my $errorLog = "/var/log/httpd/error_log";
+if($#ARGV > -1 && ($ARGV[0] eq "-h" || $ARGV[0] eq "--help")){
+	print "Sample usage: ./error.pl [ERROR_LOG] [options]\n";
+	exit 0;
+}
+
+my $errorLog = "/var/log/httpd/access_log";
+
+if($ARGV[0]){
+	$errorLog = $ARGV[0];
+} else{
+	print "Enter location of your access log file: ";
+	$errorLog = <>;
+	chomp $errorLog;
+}
+
 my @lines = `cat $errorLog`;
 chomp @lines;
 
@@ -30,7 +49,7 @@ for $line (@lines){
 	}
 }
 
-print "ERROR LOG REPORT FOR $siteName by Luke Matarazzo\n";
+print "ERROR LOG REPORT by Luke Matarazzo\n";
 print "=" x 50 . "\n";
 
 for $key (keys %errors){ #loop through the hash table with each key value
