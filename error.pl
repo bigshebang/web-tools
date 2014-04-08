@@ -9,6 +9,7 @@
 
 if($#ARGV > -1 && ($ARGV[0] eq "-h" || $ARGV[0] eq "--help")){
 	print "Sample usage: ./error.pl [ERROR_LOG] [options]\n";
+	print "\nAn exit status of 1 indicates that the given file could not be found or read properly.\n";
 	exit 0;
 }
 
@@ -21,6 +22,13 @@ if($ARGV[0]){
 	$errorLog = <>;
 	chomp $errorLog;
 }
+
+unless(-e $errorLog){ #check if the file given exists
+	print STDERR "File given either does not exist or is not readable.\n";
+	exit 1;
+}
+
+use Switch; #allow the use of switch case statement
 
 my @lines = `cat $errorLog`;
 chomp @lines;

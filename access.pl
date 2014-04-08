@@ -6,6 +6,7 @@
 
 if($#ARGV > -1 && ($ARGV[0] eq "-h" || $ARGV[0] eq "--help")){
 	print "Sample usage: ./access.pl [ACCESS_LOG] [options]\n";
+	print "\nAn exit status of 1 indicates that the given file could not be found or read properly.\n";
 	exit 0;
 }
 
@@ -18,6 +19,13 @@ if($ARGV[0]){
 	$accessLog = <>;
 	chomp $accessLog;
 }
+
+unless(-r $accessLog){ #check if the file given exists and is readable
+	print STDERR "File given either does not exist or is not readable.\n";
+	exit 1;
+}
+
+use Switch; #allow the use of switch case statement
 
 my $hits = `wc -l < $accessLog`;
 chomp $hits;
